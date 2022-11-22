@@ -1,3 +1,14 @@
 <resources>
     <string name="app_name">Mood Tracker</string>
+    <string name="test_text">This is to check size</string>
+    <string name="seven_days_txt">A week ago</string>
+    <string name="six_days_txt">Six days ago</string>
+    <string name="five_days_txt">Five days ago</string>
+    <string name="four_days_txt">Four days ago</string>
+    <string name="three_days_txt">Three days ago</string>
+    <string name="two_days_txt">Three days ago</string>
+    <string name="yesterday_txt">Yesterday</string>
+    <string name="today_txt">Today</string>
+    <string name="custom_note_content">custom_note_content</string>
+    <string name="mood_comment_question">What made you feel that way?</string>
 </resources>

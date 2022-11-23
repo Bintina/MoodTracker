@@ -27,6 +27,7 @@ class MyApp: Application() {
         // SharedPreference Variables
         lateinit var currentMood: Mood
         lateinit var moodSharedPref: SharedPreferences
+        lateinit var moodJsonString: String
         const val FILE_NAME = "Mood Preferences"
         const val CURRENT_MOOD = "Current Mood"
         const val YESTERDAY_MOOD = "Yesterdays Mood"

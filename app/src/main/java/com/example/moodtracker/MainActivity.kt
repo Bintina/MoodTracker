@@ -56,12 +56,14 @@ class MainActivity : AppCompatActivity(), GestureDetector.OnGestureListener {
             startActivity(intent)
             //may want a back button to come back.
         }
+        //Initialize SharedPref
         moodSharedPref = getSharedPreferences(FILE_NAME, MODE_PRIVATE)
         initialiseMood()
         setMood()
+        triggerAlarm()
     }
 
-    //instantiate current mood and save to Shared Preferences
+    //instantiate current mood and save to Shared Preferences.......................................
     private fun initialiseMood(): Mood {
         val currentMoodString = moodSharedPref.getString(CURRENT_MOOD, null)
 

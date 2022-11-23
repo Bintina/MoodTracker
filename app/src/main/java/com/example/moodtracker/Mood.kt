@@ -1,6 +1,6 @@
 package com.example.moodtracker
 
-data class Mood(val moodScore: Int = 2,
-                val moodComment: String? = null){
+data class Mood(var moodScore: Int = 2,
+                var moodComment: String? = null){
 
 }

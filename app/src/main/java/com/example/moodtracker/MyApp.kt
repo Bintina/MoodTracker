@@ -38,5 +38,15 @@ class MyApp: Application() {
         const val SIX_DAYS_AGO_MOOD = "Six Days Ago Mood"
         const val SEVEN_DAYS_AGO_MOOD = "Seven Days Ago Mood"
 
+        //Mood object variables
+        val defaultMood:Mood = Mood()
+        var todayMood:Mood = Mood()
+        var yesterdayMood: Mood = Mood()
+        var twoDaysAgoMood: Mood = Mood()
+        var threeDaysAgoMood: Mood = Mood()
+        var fourDaysAgoMood: Mood = Mood()
+        var fiveDaysAgoMood: Mood = Mood()
+        var sixDaysAgoMood: Mood = Mood()
+        var sevenDaysAgoMood: Mood = Mood()
     }
 }

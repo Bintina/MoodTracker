@@ -11,4 +11,5 @@
     <string name="today_txt">Today</string>
     <string name="custom_note_content">custom_note_content</string>
     <string name="mood_comment_question">What made you feel that way?</string>
+    <string name="mood_reason_question">What made you feel like that?</string>
 </resources>

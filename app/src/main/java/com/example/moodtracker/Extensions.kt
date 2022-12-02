@@ -5,21 +5,26 @@ import android.app.AlarmManager
 import android.app.PendingIntent
 import android.content.Context
 import android.content.Intent
+import android.util.Log
+import android.widget.EditText
 import android.widget.Toast
+import androidx.appcompat.app.AlertDialog
 import androidx.appcompat.app.AppCompatActivity
+import com.example.moodtracker.MyApp.Companion.currentMood
+import com.example.moodtracker.MyApp.Companion.defaultMood
 import com.example.moodtracker.MyApp.Companion.moodJsonString
 import com.example.moodtracker.MyApp.Companion.moodSharedPref
 import com.google.gson.Gson
 
 //Object ->Json, Json ->Preference..................................................................
-fun Activity.objectToJson(moodObject: Mood): String {
+fun objectToJson(moodObject: Mood): String {
 
     moodJsonString = Gson().toJson(moodObject)
 
     return moodJsonString
 }
 
-fun Activity.jsonToPreference(context: Context, moodJsonString: String, key: String) {
+fun jsonToPreference(context: Context, moodJsonString: String, key: String) {
     moodSharedPref = context.getSharedPreferences(MyApp.FILE_NAME, AppCompatActivity.MODE_PRIVATE)
     val moodSharedPrefEdit = moodSharedPref.edit()
 
@@ -27,31 +32,41 @@ fun Activity.jsonToPreference(context: Context, moodJsonString: String, key: Str
 }
 
 //Object ->Preference...............................................................................
-fun Activity.objectToPreference(context: Context,moodObject: Mood, key: String) {
+fun Activity.objectToPreference(context: Context, moodObject: Mood, key: String) {
 
     moodJsonString = objectToJson(moodObject)
-    jsonToPreference(context,moodJsonString, key)
+    jsonToPreference(context, moodJsonString, key)
 
 
 }
 
 //Preference ->Json. Json ->Object..................................................................
-fun Activity.preferenceToJson(context: Context,key: String): String {
+fun Activity.preferenceToJson(context: Context, key: String): String {
     moodSharedPref = context.getSharedPreferences(MyApp.FILE_NAME, AppCompatActivity.MODE_PRIVATE)
 
-    moodJsonString= moodSharedPref.getString(key,"").toString()
 
-return moodJsonString
+    moodJsonString = moodSharedPref.getString(key, "").toString()
+
+if (moodJsonString.isNullOrEmpty()){
+    moodJsonString = objectToJson(defaultMood)
 }
+
+    return moodJsonString
+}
+
 fun Activity.jsonToObject(moodJsonString: String): Mood {
 
     return Gson().fromJson(moodJsonString, Mood::class.java)
 }
-//Preference -> Object..............................................................................
-fun Activity.preferenceToObject(context: Context,key: String):Mood{
-    moodJsonString = preferenceToJson(context,key)
 
-    return jsonToObject(moodJsonString)
+//Preference -> Object..............................................................................
+fun Activity.preferenceToObject(context: Context, key: String): Mood {
+    moodJsonString = preferenceToJson(context, key)
+    var moodObject = defaultMood
+
+    moodObject = jsonToObject(moodJsonString)
+
+    return moodObject
 }
 
 //Alarm Triggering..................................................................................
@@ -81,4 +96,32 @@ fun Activity.triggerAlarm() {
     )
 
     Toast.makeText(this, "Daily mood save broadcast sent", Toast.LENGTH_LONG).show()
+}
+
+//Dialog Builder....................................................................................
+fun Activity.buildDialog() {
+    val builder = AlertDialog.Builder(this)
+    val inflater = layoutInflater
+    val dialogLayout = inflater.inflate(R.layout.dialog_layout, null)
+    val moodReasonEt = dialogLayout.findViewById<EditText>(R.id.mood_reason_et)
+
+    with(builder) {
+        setTitle("Make a note")
+        setPositiveButton("Save") { dialog, which ->
+            currentMood.moodComment = moodReasonEt.text.toString()
+        }
+        setNegativeButton("Cancel") { dialog, which ->
+            Log.d("Main", "Negative button clicked")
+        }
+        setView(dialogLayout)
+        show()
+    }
+}
+
+//..................................................................................................
+//Navigation........................................................................................
+fun Activity.goToHistory() {
+    val intent = Intent(this, HistoryActivity::class.java)
+    startActivity(intent)
+
 }

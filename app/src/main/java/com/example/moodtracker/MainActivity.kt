@@ -48,13 +48,12 @@ class MainActivity : AppCompatActivity(), GestureDetector.OnGestureListener {
 
         //OnClickListeners
         noteButton.setOnClickListener {
-            //TODO buildDialog()
-
+            buildDialog()
         }
         historyActivity.setOnClickListener {
             val intent = Intent(this, HistoryActivity::class.java)
             startActivity(intent)
-            //may want a back button to come back.
+
         }
         //Initialize SharedPref
         moodSharedPref = getSharedPreferences(FILE_NAME, MODE_PRIVATE)
@@ -65,14 +64,20 @@ class MainActivity : AppCompatActivity(), GestureDetector.OnGestureListener {
 
     //instantiate current mood and save to Shared Preferences.......................................
     private fun initialiseMood(): Mood {
-        val currentMoodString = moodSharedPref.getString(CURRENT_MOOD, null)
+
+    currentMood = preferenceToObject(this, CURRENT_MOOD)
+
+    /*val currentMoodString = moodSharedPref.getString(CURRENT_MOOD, null)
 
         if (currentMoodString != null) {
             currentMood = Gson().fromJson<Mood>(currentMoodString, Mood::class.java)
         } else {
             currentMood = Mood()
         }
+        */
+
         return currentMood
+
     }
 
     //Set View Elements.............................................................................

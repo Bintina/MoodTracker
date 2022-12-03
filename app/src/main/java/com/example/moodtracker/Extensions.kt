@@ -6,6 +6,7 @@ import android.app.PendingIntent
 import android.content.Context
 import android.content.Intent
 import android.util.Log
+import android.view.View
 import android.widget.EditText
 import android.widget.Toast
 import androidx.appcompat.app.AlertDialog
@@ -124,4 +125,8 @@ fun Activity.goToHistory() {
     val intent = Intent(this, HistoryActivity::class.java)
     startActivity(intent)
 
+}
+//History View methods
+fun Activity.setHistoryBarColors(view: View, moodObject: Mood){
+    view.setBackgroundColor(getColor(MyApp.arrayOfBackgrounds[moodObject.moodScore]))
 }

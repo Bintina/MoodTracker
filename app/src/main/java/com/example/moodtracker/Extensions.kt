@@ -11,10 +11,26 @@ import android.widget.EditText
 import android.widget.Toast
 import androidx.appcompat.app.AlertDialog
 import androidx.appcompat.app.AppCompatActivity
+import com.example.moodtracker.MyApp.Companion.CURRENT_MOOD
+import com.example.moodtracker.MyApp.Companion.FIVE_DAYS_AGO_MOOD
+import com.example.moodtracker.MyApp.Companion.FOUR_DAYS_AGO_MOOD
+import com.example.moodtracker.MyApp.Companion.SEVEN_DAYS_AGO_MOOD
+import com.example.moodtracker.MyApp.Companion.SIX_DAYS_AGO_MOOD
+import com.example.moodtracker.MyApp.Companion.THREE_DAYS_AGO_MOOD
+import com.example.moodtracker.MyApp.Companion.TWO_DAYS_AGO_MOOD
+import com.example.moodtracker.MyApp.Companion.YESTERDAY_MOOD
 import com.example.moodtracker.MyApp.Companion.currentMood
 import com.example.moodtracker.MyApp.Companion.defaultMood
+import com.example.moodtracker.MyApp.Companion.fiveDaysAgoMood
+import com.example.moodtracker.MyApp.Companion.fourDaysAgoMood
 import com.example.moodtracker.MyApp.Companion.moodJsonString
 import com.example.moodtracker.MyApp.Companion.moodSharedPref
+import com.example.moodtracker.MyApp.Companion.sevenDaysAgoMood
+import com.example.moodtracker.MyApp.Companion.sixDaysAgoMood
+import com.example.moodtracker.MyApp.Companion.threeDaysAgoMood
+import com.example.moodtracker.MyApp.Companion.todayMood
+import com.example.moodtracker.MyApp.Companion.twoDaysAgoMood
+import com.example.moodtracker.MyApp.Companion.yesterdayMood
 import com.google.gson.Gson
 
 //Object ->Json, Json ->Preference..................................................................
@@ -42,26 +58,26 @@ fun Activity.objectToPreference(context: Context, moodObject: Mood, key: String)
 }
 
 //Preference ->Json. Json ->Object..................................................................
-fun Activity.preferenceToJson(context: Context, key: String): String {
+fun preferenceToJson(context: Context, key: String): String {
     moodSharedPref = context.getSharedPreferences(MyApp.FILE_NAME, AppCompatActivity.MODE_PRIVATE)
 
 
     moodJsonString = moodSharedPref.getString(key, "").toString()
 
-if (moodJsonString.isNullOrEmpty()){
-    moodJsonString = objectToJson(defaultMood)
-}
+    if (moodJsonString.isNullOrEmpty()) {
+        moodJsonString = objectToJson(defaultMood)
+    }
 
     return moodJsonString
 }
 
-fun Activity.jsonToObject(moodJsonString: String): Mood {
+fun jsonToObject(moodJsonString: String): Mood {
 
     return Gson().fromJson(moodJsonString, Mood::class.java)
 }
 
 //Preference -> Object..............................................................................
-fun Activity.preferenceToObject(context: Context, key: String): Mood {
+fun preferenceToObject(context: Context, key: String): Mood {
     moodJsonString = preferenceToJson(context, key)
     var moodObject = defaultMood
 
@@ -69,6 +85,18 @@ fun Activity.preferenceToObject(context: Context, key: String): Mood {
 
     return moodObject
 }
+//initialitions
+fun initialiseHistoryVariables(context: Context) {
+    todayMood = preferenceToObject(context, CURRENT_MOOD)
+    yesterdayMood = preferenceToObject(context, YESTERDAY_MOOD)
+    twoDaysAgoMood = preferenceToObject(context, TWO_DAYS_AGO_MOOD)
+    threeDaysAgoMood = preferenceToObject(context, THREE_DAYS_AGO_MOOD)
+    fourDaysAgoMood = preferenceToObject(context, FOUR_DAYS_AGO_MOOD)
+    fiveDaysAgoMood = preferenceToObject(context, FIVE_DAYS_AGO_MOOD)
+    sixDaysAgoMood = preferenceToObject(context, SIX_DAYS_AGO_MOOD)
+    sevenDaysAgoMood = preferenceToObject(context, SEVEN_DAYS_AGO_MOOD)
+}
+
 
 //Alarm Triggering..................................................................................
 fun Activity.triggerAlarm() {
@@ -126,7 +154,16 @@ fun Activity.goToHistory() {
     startActivity(intent)
 
 }
-//History View methods
-fun Activity.setHistoryBarColors(view: View, moodObject: Mood){
+
+//History View methods..............................................................................
+fun Activity.setHistoryBarColors(view: View, moodObject: Mood) {
     view.setBackgroundColor(getColor(MyApp.arrayOfBackgrounds[moodObject.moodScore]))
+}
+
+//Reset Home Screen to default mood.................................................................
+fun setMood() {
+
+
+    MyApp.moodImage.setImageResource(MyApp.arrayOfImages[currentMood.moodScore])
+    MyApp.background.setBackgroundColor((MyApp.arrayOfBackgrounds[currentMood.moodScore]))
 }

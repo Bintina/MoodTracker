@@ -4,7 +4,6 @@ import android.content.Intent
 import android.os.Bundle
 import android.view.GestureDetector
 import android.view.MotionEvent
-import android.view.View
 import android.widget.ImageView
 import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
@@ -12,15 +11,16 @@ import com.example.moodtracker.MyApp.Companion.CURRENT_MOOD
 import com.example.moodtracker.MyApp.Companion.FILE_NAME
 import com.example.moodtracker.MyApp.Companion.arrayOfBackgrounds
 import com.example.moodtracker.MyApp.Companion.arrayOfImages
+import com.example.moodtracker.MyApp.Companion.background
 import com.example.moodtracker.MyApp.Companion.currentMood
+import com.example.moodtracker.MyApp.Companion.moodImage
 import com.example.moodtracker.MyApp.Companion.moodSharedPref
 import com.google.gson.Gson
 import kotlin.math.abs
 
 class MainActivity : AppCompatActivity(), GestureDetector.OnGestureListener {
     //View initialising
-    private lateinit var background: View
-    private lateinit var moodImage: ImageView
+
     private lateinit var noteButton: ImageView
     private lateinit var historyActivity: ImageView
 
@@ -38,8 +38,8 @@ class MainActivity : AppCompatActivity(), GestureDetector.OnGestureListener {
         setContentView(R.layout.activity_main)
 
         // Find views. view variable allocations
-        background = findViewById(R.id.mood_container)
-        moodImage = findViewById(R.id.emoji_image)
+        MyApp.background = findViewById(R.id.mood_container)
+        MyApp.moodImage = findViewById(R.id.emoji_image)
         noteButton = findViewById(R.id.custom_note)
         historyActivity = findViewById(R.id.mood_history)
 
@@ -49,6 +49,7 @@ class MainActivity : AppCompatActivity(), GestureDetector.OnGestureListener {
         //OnClickListeners
         noteButton.setOnClickListener {
             buildDialog()
+            saveCommentAndMood()
         }
         historyActivity.setOnClickListener {
             val intent = Intent(this, HistoryActivity::class.java)
@@ -59,32 +60,36 @@ class MainActivity : AppCompatActivity(), GestureDetector.OnGestureListener {
         moodSharedPref = getSharedPreferences(FILE_NAME, MODE_PRIVATE)
         initialiseMood()
         setMood()
+        initialiseHistoryVariables(this)
         triggerAlarm()
     }
 
     //instantiate current mood and save to Shared Preferences.......................................
     private fun initialiseMood(): Mood {
 
-    currentMood = preferenceToObject(this, CURRENT_MOOD)
+        val currentMoodString = moodSharedPref.getString(CURRENT_MOOD, null)
 
-    /*val currentMoodString = moodSharedPref.getString(CURRENT_MOOD, null)
+            if (currentMoodString.isNullOrEmpty()) {
+                currentMood = Mood()
+            } else {
+                currentMood = Gson().fromJson<Mood>(currentMoodString, Mood::class.java)
+            }
 
-        if (currentMoodString != null) {
-            currentMood = Gson().fromJson<Mood>(currentMoodString, Mood::class.java)
-        } else {
-            currentMood = Mood()
-        }
-        */
 
         return currentMood
 
     }
 
     //Set View Elements.............................................................................
-    fun setMood() {
+    private fun setMood() {
 
         moodImage.setImageResource(arrayOfImages[currentMood.moodScore])
         background.setBackgroundColor(getColor(arrayOfBackgrounds[currentMood.moodScore]))
+    }
+
+    //save mood object to Shared
+    fun saveCommentAndMood() {
+        objectToPreference(this,currentMood, CURRENT_MOOD)
     }
 
     //Gesture Detection.............................................................................
@@ -170,4 +175,8 @@ class MainActivity : AppCompatActivity(), GestureDetector.OnGestureListener {
         return false
     }
 
+    override fun onStop() {
+        super.onStop()
+        saveCommentAndMood()
+    }
 }

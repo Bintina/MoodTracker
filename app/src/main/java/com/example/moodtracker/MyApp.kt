@@ -3,10 +3,16 @@ package com.example.moodtracker
 import android.app.Application
 import android.content.SharedPreferences
 import android.view.GestureDetector
+import android.view.View
+import android.widget.ImageView
 
 class MyApp: Application() {
 
+
     companion object{
+        //View variables
+        lateinit var background: View
+        lateinit var moodImage: ImageView
 
         //Image and Background Arrays
         val arrayOfBackgrounds = arrayOf<Int>(

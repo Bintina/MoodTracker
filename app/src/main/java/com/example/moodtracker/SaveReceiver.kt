@@ -19,54 +19,84 @@ import com.example.moodtracker.MyApp.Companion.fourDaysAgoMood
 import com.example.moodtracker.MyApp.Companion.sevenDaysAgoMood
 import com.example.moodtracker.MyApp.Companion.sixDaysAgoMood
 import com.example.moodtracker.MyApp.Companion.threeDaysAgoMood
+import com.example.moodtracker.MyApp.Companion.todayMood
 import com.example.moodtracker.MyApp.Companion.twoDaysAgoMood
 import com.example.moodtracker.MyApp.Companion.yesterdayMood
 
 class SaveReceiver : BroadcastReceiver() {
 
-    override fun onReceive(context: Context?, intent: Intent?) {
+    override fun onReceive(context: Context, intent: Intent?) {
         val d = Log.d(
             "SaveAlarmLog",
             "Save Receiver Broadcast Recieved"
         )
-        //shuffleSavedMoods(context)
+        shuffleSavedMoods(context)
+        initialiseHistoryVariables(context)
     }
 
     fun shuffleSavedMoods(context: Context): Context {
 
+
+
+        var day0String = preferenceToJson(context, CURRENT_MOOD)
+        var day1String = preferenceToJson(context, YESTERDAY_MOOD)
+        var day2String = preferenceToJson(context, TWO_DAYS_AGO_MOOD)
+        var day3String = preferenceToJson(context, THREE_DAYS_AGO_MOOD)
+        var day4String = preferenceToJson(context, FOUR_DAYS_AGO_MOOD)
+        var day5String = preferenceToJson(context, FIVE_DAYS_AGO_MOOD)
+        var day6String = preferenceToJson(context, SIX_DAYS_AGO_MOOD)
+        var day7String = preferenceToJson(context, SEVEN_DAYS_AGO_MOOD)
+
         Log.d(
-            "Broadcast Log",
-            "Broadcast received"
+            "JsonLog",
+
+            "$day0String\n" +
+                    "$day1String\n" +
+                    "$day2String\n" +
+                    "$day3String\n" +
+                    "$day4String\n" +
+                    "$day5String\n" +
+                    "$day6String\n"
         )
-        var todayJson = objectToJson(currentMood)
-        var yesterdayJson = objectToJson(yesterdayMood)
-        var day2Json = objectToJson(twoDaysAgoMood)
-        var day3Json = objectToJson(threeDaysAgoMood)
-        var day4Json = objectToJson(fourDaysAgoMood)
-        var day5Json = objectToJson(fiveDaysAgoMood)
-        var day6Json = objectToJson(sixDaysAgoMood)
-        var day7Json = objectToJson(sevenDaysAgoMood)
+        day7String = day6String
+        day6String = day5String
+        day5String = day4String
+        day4String = day3String
+        day3String = day2String
+        day2String = day1String
+        day1String = day0String
 
-        val defaultJson = objectToJson(defaultMood)
+        val defaultMoodString = objectToJson(defaultMood).toString()
+        day0String = defaultMoodString
 
-        day7Json = day6Json
-        day6Json = day5Json
-        day5Json = day4Json
-        day4Json = day3Json
-        day3Json = day2Json
-        day2Json = yesterdayJson
-        yesterdayJson = todayJson
-        todayJson = defaultJson
+        Log.d(
+            "defaultLog",
+            "$defaultMoodString\n $day0String"
+        )
 
-        jsonToPreference(context, day7Json, SEVEN_DAYS_AGO_MOOD)
-        jsonToPreference(context, day6Json, SIX_DAYS_AGO_MOOD)
-        jsonToPreference(context, day5Json, FIVE_DAYS_AGO_MOOD)
-        jsonToPreference(context, day4Json, FOUR_DAYS_AGO_MOOD)
-        jsonToPreference(context, day3Json, THREE_DAYS_AGO_MOOD)
-        jsonToPreference(context, day2Json, TWO_DAYS_AGO_MOOD)
-        jsonToPreference(context, yesterdayJson, YESTERDAY_MOOD)
-        jsonToPreference(context, todayJson, CURRENT_MOOD)
+        jsonToPreference(context, day0String, CURRENT_MOOD)
+        jsonToPreference(context, day1String!!, YESTERDAY_MOOD)
+        jsonToPreference(context, day2String!!, TWO_DAYS_AGO_MOOD)
+        jsonToPreference(context, day3String!!, THREE_DAYS_AGO_MOOD)
+        jsonToPreference(context, day4String!!, FOUR_DAYS_AGO_MOOD)
+        jsonToPreference(context, day5String!!, FIVE_DAYS_AGO_MOOD)
+        jsonToPreference(context, day6String!!, SIX_DAYS_AGO_MOOD)
+        jsonToPreference(context, day7String!!, SEVEN_DAYS_AGO_MOOD)
 
+        Log.d(
+            "ShuffleLog",
+            "Show me. Today: $todayMood, and $defaultMoodString" +
+                    "\nYesterday: $yesterdayMood, and $day0String" +
+                    "\n2Days: $twoDaysAgoMood, and $day1String" +
+                    "\n3Days: $threeDaysAgoMood, and $day2String" +
+                    "\n4Days: $fourDaysAgoMood, and $day3String" +
+                    "\n5Days: $fiveDaysAgoMood, and $day4String" +
+                    "\n6Days: $sixDaysAgoMood, and $day5String" +
+                    "\n7Days: $sevenDaysAgoMood and $day6String"
+        )
+
+        currentMood = Mood()
+        setMood()
         return context
     }
 }

@@ -2,7 +2,6 @@ package com.example.moodtracker
 
 import android.os.Bundle
 import androidx.appcompat.app.AppCompatActivity
-import com.example.moodtracker.MyApp.Companion.currentMood
 import com.example.moodtracker.MyApp.Companion.fiveDaysAgoMood
 import com.example.moodtracker.MyApp.Companion.fourDaysAgoMood
 import com.example.moodtracker.MyApp.Companion.sevenDaysAgoMood
@@ -16,19 +15,12 @@ class HistoryActivity : AppCompatActivity() {
 
     lateinit var historyBinding: ActivityHistoryBinding
 
-    /*  lateinit var screenWidth: Int
-      lateinit var widthIncrement: Int*/
-
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         historyBinding = ActivityHistoryBinding.inflate(layoutInflater)
         setContentView(historyBinding.root)
 
-        //Extract screen width
-        /* screenWidth = resources.displayMetrics.widthPixels
-         widthIncrement = screenWidth/5
- */
-
+        
         //Sett historyBar colors
         setHistoryBarColors(historyBinding.yesterday, yesterdayMood)
         setHistoryBarColors(historyBinding.twoDays, twoDaysAgoMood)
@@ -38,15 +30,16 @@ class HistoryActivity : AppCompatActivity() {
         setHistoryBarColors(historyBinding.sixDays, sixDaysAgoMood)
         setHistoryBarColors(historyBinding.sevenDays, sevenDaysAgoMood)
 
-    }
+//        /Set history bar widths
+        setHistoryBarWidth(historyBinding.yesterday, yesterdayMood)
+        setHistoryBarWidth(historyBinding.twoDays, twoDaysAgoMood)
+        setHistoryBarWidth(historyBinding.threeDays, threeDaysAgoMood)
+        setHistoryBarWidth(historyBinding.fourDays, fourDaysAgoMood)
+        setHistoryBarWidth(historyBinding.fiveDays, fiveDaysAgoMood)
+        setHistoryBarWidth(historyBinding.sixDays, sixDaysAgoMood)
+        setHistoryBarWidth(historyBinding.sevenDays, sevenDaysAgoMood)
 
-    fun setHistoryBarWidth(moodObject: Mood) {
 
-        val historyScore = moodObject.moodScore + 1
-
-        /* val params = layoutParams
-         layoutParams.width = widthIncrement * historyScore
-         layoutParams = params*/
     }
 
 

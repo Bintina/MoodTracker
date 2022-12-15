@@ -163,11 +163,6 @@ fun Activity.setHistoryBarColors(view: View, moodObject: Mood) {
     view.setBackgroundColor(getColor(MyApp.arrayOfBackgrounds[moodObject.moodScore]))
 }
 
-//Reset Home Screen to default mood.................................................................
-fun setMood() {
-    MyApp.moodImage.setImageResource(MyApp.arrayOfImages[currentMood.moodScore])
-    MyApp.background.setBackgroundColor((MyApp.arrayOfBackgrounds[currentMood.moodScore]))
-}
 //History bar widths................................................................................
 fun Activity.setHistoryBarWidth(view: View, moodObject: Mood) {
 

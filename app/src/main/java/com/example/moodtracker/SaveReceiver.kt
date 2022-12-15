@@ -32,6 +32,7 @@ class SaveReceiver : BroadcastReceiver() {
         )
         shuffleSavedMoods(context)
         initialiseHistoryVariables(context)
+
     }
 
     fun shuffleSavedMoods(context: Context): Context {
@@ -98,7 +99,9 @@ class SaveReceiver : BroadcastReceiver() {
         )
 
         currentMood = Mood()
-        setMood()
+        MyApp.moodImage.setImageResource(MyApp.arrayOfImages[currentMood.moodScore])
+        MyApp.background.setBackgroundColor(context.getColor(MyApp.arrayOfBackgrounds[currentMood.moodScore]))
+
         return context
     }
 }

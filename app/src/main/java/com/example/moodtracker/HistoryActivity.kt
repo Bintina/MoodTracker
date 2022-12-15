@@ -2,6 +2,7 @@ package com.example.moodtracker
 
 import android.os.Bundle
 import android.widget.TextView
+import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
 import com.example.moodtracker.MyApp.Companion.fiveDaysAgoMood
 import com.example.moodtracker.MyApp.Companion.fourDaysAgoMood
@@ -63,7 +64,11 @@ class HistoryActivity : AppCompatActivity() {
                 R.drawable.ic_comment_black_48px,
                 0
             )
+            view.setOnClickListener {
+                Toast.makeText(this, moodComment, Toast.LENGTH_LONG).show()
+            }
         }
+
     }
 
 

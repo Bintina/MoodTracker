@@ -2,7 +2,6 @@ package com.example.moodtracker
 
 import android.content.Intent
 import android.os.Bundle
-import android.util.Log
 import android.view.GestureDetector
 import android.view.MotionEvent
 import android.widget.ImageView
@@ -70,11 +69,11 @@ class MainActivity : AppCompatActivity(), GestureDetector.OnGestureListener {
 
         val currentMoodString = moodSharedPref.getString(CURRENT_MOOD, null)
 
-            if (currentMoodString.isNullOrEmpty()) {
-                currentMood = Mood()
-            } else {
-                currentMood = Gson().fromJson<Mood>(currentMoodString, Mood::class.java)
-            }
+        if (currentMoodString.isNullOrEmpty()) {
+            currentMood = Mood()
+        } else {
+            currentMood = Gson().fromJson<Mood>(currentMoodString, Mood::class.java)
+        }
 
 
         return currentMood
@@ -90,15 +89,7 @@ class MainActivity : AppCompatActivity(), GestureDetector.OnGestureListener {
 
     //save mood object to Shared
     fun saveCommentAndMood() {
-        moodSharedPref = getSharedPreferences(MyApp.FILE_NAME, MODE_PRIVATE)
-        val moodSharedPrefEdit = moodSharedPref.edit()
-
-        val currentMoodJson = Gson().toJson(currentMood)
-
-        moodSharedPrefEdit.putString(CURRENT_MOOD,currentMoodJson).apply()
-Log.d("Main Save",
-"object: $currentMood String: $currentMoodJson" )
-//        objectToPreference(this,currentMood, CURRENT_MOOD)
+        objectToPreference(this, currentMood, CURRENT_MOOD)
     }
 
     //Gesture Detection.............................................................................

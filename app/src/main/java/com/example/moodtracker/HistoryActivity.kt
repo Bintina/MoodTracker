@@ -1,6 +1,7 @@
 package com.example.moodtracker
 
 import android.os.Bundle
+import android.widget.TextView
 import androidx.appcompat.app.AppCompatActivity
 import com.example.moodtracker.MyApp.Companion.fiveDaysAgoMood
 import com.example.moodtracker.MyApp.Companion.fourDaysAgoMood
@@ -20,7 +21,7 @@ class HistoryActivity : AppCompatActivity() {
         historyBinding = ActivityHistoryBinding.inflate(layoutInflater)
         setContentView(historyBinding.root)
 
-        
+
         //Sett historyBar colors
         setHistoryBarColors(historyBinding.yesterday, yesterdayMood)
         setHistoryBarColors(historyBinding.twoDays, twoDaysAgoMood)
@@ -39,11 +40,31 @@ class HistoryActivity : AppCompatActivity() {
         setHistoryBarWidth(historyBinding.sixDays, sixDaysAgoMood)
         setHistoryBarWidth(historyBinding.sevenDays, sevenDaysAgoMood)
 
+        // Show icon for moods with comment
+        showCommentIcon(yesterdayMood, historyBinding.yesterday)
+        showCommentIcon(twoDaysAgoMood, historyBinding.twoDays)
+        showCommentIcon(threeDaysAgoMood, historyBinding.threeDays)
+        showCommentIcon(fourDaysAgoMood, historyBinding.fourDays)
+        showCommentIcon(fiveDaysAgoMood, historyBinding.fiveDays)
+        showCommentIcon(sixDaysAgoMood, historyBinding.sixDays)
+        showCommentIcon(sevenDaysAgoMood, historyBinding.sevenDays)
 
     }
 
 
-    fun showCommentIcon() {
+    fun showCommentIcon(moodObject: Mood, view: TextView) {
+        val moodComment = moodObject.moodComment
+        val textView = view
 
+        if (!moodComment.isNullOrEmpty()) {
+            textView.setCompoundDrawablesWithIntrinsicBounds(
+                0,
+                0,
+                R.drawable.ic_comment_black_48px,
+                0
+            )
+        }
     }
+
+
 }

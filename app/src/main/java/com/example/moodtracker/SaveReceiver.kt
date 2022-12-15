@@ -56,7 +56,9 @@ class SaveReceiver : BroadcastReceiver() {
                     "$day3String\n" +
                     "$day4String\n" +
                     "$day5String\n" +
-                    "$day6String\n"
+                    "$day6String\n" +
+                    "current mood $currentMood\n"+
+                    "$CURRENT_MOOD"
         )
         day7String = day6String
         day6String = day5String

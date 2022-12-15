@@ -4,6 +4,7 @@ import android.app.Activity
 import android.app.AlarmManager
 import android.app.PendingIntent
 import android.content.Context
+import android.content.Context.MODE_PRIVATE
 import android.content.Intent
 import android.util.Log
 import android.view.View
@@ -42,7 +43,7 @@ fun objectToJson(moodObject: Mood): String {
 }
 
 fun jsonToPreference(context: Context, moodJsonString: String, key: String) {
-    moodSharedPref = context.getSharedPreferences(MyApp.FILE_NAME, AppCompatActivity.MODE_PRIVATE)
+    moodSharedPref = context.getSharedPreferences(MyApp.FILE_NAME, MODE_PRIVATE)
     val moodSharedPrefEdit = moodSharedPref.edit()
 
     moodSharedPrefEdit.putString(key, moodJsonString).apply()
@@ -138,6 +139,8 @@ fun Activity.buildDialog() {
         setTitle("Make a note")
         setPositiveButton("Save") { dialog, which ->
             currentMood.moodComment = moodReasonEt.text.toString()
+            Log.d("EtSave", "Comment saved? ${currentMood.moodComment}")
+            objectToPreference(context, currentMood, CURRENT_MOOD)
         }
         setNegativeButton("Cancel") { dialog, which ->
             Log.d("Main", "Negative button clicked")

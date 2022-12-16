@@ -23,7 +23,16 @@ class HistoryActivity : AppCompatActivity() {
         setContentView(historyBinding.root)
 
 
-        //Sett historyBar colors
+        //Set historyBar Heights
+        setHistoryBarHeights(historyBinding.yesterday, historyBinding.historyLinear)
+        setHistoryBarHeights(historyBinding.twoDays, historyBinding.historyLinear)
+        setHistoryBarHeights(historyBinding.threeDays, historyBinding.historyLinear)
+        setHistoryBarHeights(historyBinding.fourDays, historyBinding.historyLinear)
+        setHistoryBarHeights(historyBinding.fiveDays, historyBinding.historyLinear)
+        setHistoryBarHeights(historyBinding.sixDays, historyBinding.historyLinear)
+        setHistoryBarHeights(historyBinding.sevenDays, historyBinding.historyLinear)
+
+        //Set historyBar colors
         setHistoryBarColors(historyBinding.yesterday, yesterdayMood)
         setHistoryBarColors(historyBinding.twoDays, twoDaysAgoMood)
         setHistoryBarColors(historyBinding.threeDays, threeDaysAgoMood)
@@ -32,7 +41,7 @@ class HistoryActivity : AppCompatActivity() {
         setHistoryBarColors(historyBinding.sixDays, sixDaysAgoMood)
         setHistoryBarColors(historyBinding.sevenDays, sevenDaysAgoMood)
 
-//        /Set history bar widths
+        //Set history bar widths
         setHistoryBarWidth(historyBinding.yesterday, yesterdayMood)
         setHistoryBarWidth(historyBinding.twoDays, twoDaysAgoMood)
         setHistoryBarWidth(historyBinding.threeDays, threeDaysAgoMood)
@@ -53,23 +62,7 @@ class HistoryActivity : AppCompatActivity() {
     }
 
 
-    fun showCommentIcon(moodObject: Mood, view: TextView) {
-        val moodComment = moodObject.moodComment
-        val textView = view
 
-        if (!moodComment.isNullOrEmpty()) {
-            textView.setCompoundDrawablesWithIntrinsicBounds(
-                0,
-                0,
-                R.drawable.ic_comment_black_48px,
-                0
-            )
-            view.setOnClickListener {
-                Toast.makeText(this, moodComment, Toast.LENGTH_LONG).show()
-            }
-        }
-
-    }
 
 
 }

@@ -6,9 +6,12 @@ import android.app.PendingIntent
 import android.content.Context
 import android.content.Context.MODE_PRIVATE
 import android.content.Intent
+import android.icu.lang.UCharacter.GraphemeClusterBreak.L
 import android.util.Log
 import android.view.View
 import android.widget.EditText
+import android.widget.LinearLayout
+import android.widget.TextView
 import android.widget.Toast
 import androidx.appcompat.app.AlertDialog
 import androidx.appcompat.app.AppCompatActivity
@@ -159,6 +162,19 @@ fun Activity.goToHistory() {
 }
 
 //History View methods..............................................................................
+//History bar heights...............................................................................
+fun Activity.setHistoryBarHeights(view: View, layout: LinearLayout) {
+
+
+    //Extract screen height
+    val screenHeight = resources.displayMetrics.heightPixels.toInt()
+    val padding = 250
+    val heightPerBar = (screenHeight-padding) / 7
+
+    val params = view.layoutParams
+    params.height = heightPerBar
+}
+//HistoryBarColors..................................................................................
 fun Activity.setHistoryBarColors(view: View, moodObject: Mood) {
     view.setBackgroundColor(getColor(MyApp.arrayOfBackgrounds[moodObject.moodScore]))
 }
@@ -174,4 +190,22 @@ fun Activity.setHistoryBarWidth(view: View, moodObject: Mood) {
 
     val params = view.layoutParams
     params.width = widthIncrement * historyScore
+}
+//Show comments in history screen...................................................................
+fun Activity.showCommentIcon(moodObject: Mood, view: TextView) {
+    val moodComment = moodObject.moodComment
+    val textView = view
+
+    if (!moodComment.isNullOrEmpty()) {
+        textView.setCompoundDrawablesWithIntrinsicBounds(
+            0,
+            0,
+            R.drawable.ic_comment_black_48px,
+            0
+        )
+        view.setOnClickListener {
+            Toast.makeText(this, moodComment, Toast.LENGTH_LONG).show()
+        }
+    }
+
 }

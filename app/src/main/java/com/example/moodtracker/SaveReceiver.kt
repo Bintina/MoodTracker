@@ -78,24 +78,24 @@ class SaveReceiver : BroadcastReceiver() {
         )
 
         jsonToPreference(context, day0String, CURRENT_MOOD)
-        jsonToPreference(context, day1String!!, YESTERDAY_MOOD)
-        jsonToPreference(context, day2String!!, TWO_DAYS_AGO_MOOD)
-        jsonToPreference(context, day3String!!, THREE_DAYS_AGO_MOOD)
-        jsonToPreference(context, day4String!!, FOUR_DAYS_AGO_MOOD)
-        jsonToPreference(context, day5String!!, FIVE_DAYS_AGO_MOOD)
-        jsonToPreference(context, day6String!!, SIX_DAYS_AGO_MOOD)
-        jsonToPreference(context, day7String!!, SEVEN_DAYS_AGO_MOOD)
+        jsonToPreference(context, day1String, YESTERDAY_MOOD)
+        jsonToPreference(context, day2String, TWO_DAYS_AGO_MOOD)
+        jsonToPreference(context, day3String, THREE_DAYS_AGO_MOOD)
+        jsonToPreference(context, day4String, FOUR_DAYS_AGO_MOOD)
+        jsonToPreference(context, day5String, FIVE_DAYS_AGO_MOOD)
+        jsonToPreference(context, day6String, SIX_DAYS_AGO_MOOD)
+        jsonToPreference(context, day7String, SEVEN_DAYS_AGO_MOOD)
 
         Log.d(
             "ShuffleLog",
-            "Show me. Today: $todayMood, and $defaultMoodString" +
-                    "\nYesterday: $yesterdayMood, and $day0String" +
-                    "\n2Days: $twoDaysAgoMood, and $day1String" +
-                    "\n3Days: $threeDaysAgoMood, and $day2String" +
-                    "\n4Days: $fourDaysAgoMood, and $day3String" +
-                    "\n5Days: $fiveDaysAgoMood, and $day4String" +
-                    "\n6Days: $sixDaysAgoMood, and $day5String" +
-                    "\n7Days: $sevenDaysAgoMood and $day6String"
+            "Show me. Today: $todayMood, and $day0String" +
+                    "\nYesterday: $yesterdayMood, and $day1String" +
+                    "\n2Days: $twoDaysAgoMood, and $day2String" +
+                    "\n3Days: $threeDaysAgoMood, and $day3String" +
+                    "\n4Days: $fourDaysAgoMood, and $day4String" +
+                    "\n5Days: $fiveDaysAgoMood, and $day5String" +
+                    "\n6Days: $sixDaysAgoMood, and $day6String" +
+                    "\n7Days: $sevenDaysAgoMood, and $day7String"
         )
 
         currentMood = Mood()

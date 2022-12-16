@@ -1,5 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout
+    android:id="@+id/history_linear"
     xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
@@ -11,70 +12,84 @@
     <TextView
         android:id="@+id/seven_days"
         android:layout_width="wrap_content"
-        android:layout_height="50dp"
+        android:layout_height="wrap_content"
         android:background="@color/colorAccent"
         android:text="@string/seven_days_txt"
-        android:textSize="40sp"
+        android:textSize="15sp"
+        android:paddingStart="2dp"
+        android:paddingEnd="10dp"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
 
     <TextView
         android:id="@+id/six_days"
         android:layout_width="wrap_content"
-        android:layout_height="50dp"
+        android:layout_height="wrap_content"
         android:background="@color/colorPrimary"
         android:text="@string/six_days_txt"
-        android:textSize="40sp"
+        android:textSize="15sp"
+        android:paddingStart="2dp"
+        android:paddingEnd="10dp"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@id/seven_days" />
 
     <TextView
         android:id="@+id/five_days"
         android:layout_width="wrap_content"
-        android:layout_height="50dp"
+        android:layout_height="wrap_content"
         android:background="@color/colorAccent"
         android:text="@string/five_days_txt"
-        android:textSize="40sp"
+        android:textSize="15dp"
+        android:paddingStart="2dp"
+        android:paddingEnd="10dp"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@id/six_days" />
 
     <TextView
         android:id="@+id/four_days"
         android:layout_width="wrap_content"
-        android:layout_height="50dp"
+        android:layout_height="wrap_content"
         android:background="@color/colorPrimary"
         android:text="@string/four_days_txt"
-        android:textSize="40sp"
+        android:textSize="15dp"
+        android:paddingStart="2dp"
+        android:paddingEnd="10dp"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@id/five_days" />
 
     <TextView
         android:id="@+id/three_days"
         android:layout_width="wrap_content"
-        android:layout_height="50dp"
+        android:layout_height="wrap_content"
         android:background="@color/colorAccent"
         android:text="@string/three_days_txt"
-        android:textSize="40sp"
+        android:textSize="15dp"
+        android:paddingStart="2dp"
+        android:paddingEnd="10dp"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@id/four_days" />
 
     <TextView
         android:id="@+id/two_days"
         android:layout_width="wrap_content"
-        android:layout_height="50dp"
+        android:layout_height="wrap_content"
         android:background="@color/colorPrimary"
         android:text="@string/two_days_txt"
-        android:textSize="40sp"
+        android:textSize="15sp"
+        android:paddingStart="2dp"
+        android:paddingEnd="10dp"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@id/three_days" />
 
     <TextView
         android:id="@+id/yesterday"
         android:layout_width="wrap_content"
-        android:layout_height="50dp"
+        android:layout_height="wrap_content"
         android:background="@color/colorAccent"
         android:text="@string/yesterday_txt"
-        android:textSize="40sp"
+        android:textSize="15sp"
+        android:paddingStart="2dp"
+        android:paddingEnd="10dp"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@id/yesterday"/>
 

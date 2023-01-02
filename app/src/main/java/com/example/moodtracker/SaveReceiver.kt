@@ -4,6 +4,8 @@ import android.content.BroadcastReceiver
 import android.content.Context
 import android.content.Intent
 import android.util.Log
+import android.view.View
+import android.widget.ImageView
 import com.example.moodtracker.MyApp.Companion.CURRENT_MOOD
 import com.example.moodtracker.MyApp.Companion.FIVE_DAYS_AGO_MOOD
 import com.example.moodtracker.MyApp.Companion.FOUR_DAYS_AGO_MOOD
@@ -26,18 +28,11 @@ import com.example.moodtracker.MyApp.Companion.yesterdayMood
 class SaveReceiver : BroadcastReceiver() {
 
     override fun onReceive(context: Context, intent: Intent?) {
-        val d = Log.d(
-            "SaveAlarmLog",
-            "Save Receiver Broadcast Recieved"
-        )
-        shuffleSavedMoods(context)
-        initialiseHistoryVariables(context)
 
+        shuffleSavedMoods(context)
     }
 
-    fun shuffleSavedMoods(context: Context): Context {
-
-
+    private fun shuffleSavedMoods(context: Context): Context {
 
         var day0String = preferenceToJson(context, CURRENT_MOOD)
         var day1String = preferenceToJson(context, YESTERDAY_MOOD)
@@ -48,19 +43,6 @@ class SaveReceiver : BroadcastReceiver() {
         var day6String = preferenceToJson(context, SIX_DAYS_AGO_MOOD)
         var day7String = preferenceToJson(context, SEVEN_DAYS_AGO_MOOD)
 
-        Log.d(
-            "JsonLog",
-
-            "$day0String\n" +
-                    "$day1String\n" +
-                    "$day2String\n" +
-                    "$day3String\n" +
-                    "$day4String\n" +
-                    "$day5String\n" +
-                    "$day6String\n" +
-                    "current mood $currentMood\n"+
-                    "$CURRENT_MOOD"
-        )
         day7String = day6String
         day6String = day5String
         day5String = day4String
@@ -72,11 +54,6 @@ class SaveReceiver : BroadcastReceiver() {
         val defaultMoodString = objectToJson(defaultMood).toString()
         day0String = defaultMoodString
 
-        Log.d(
-            "defaultLog",
-            "$defaultMoodString\n $day0String"
-        )
-
         jsonToPreference(context, day0String, CURRENT_MOOD)
         jsonToPreference(context, day1String, YESTERDAY_MOOD)
         jsonToPreference(context, day2String, TWO_DAYS_AGO_MOOD)
@@ -86,21 +63,7 @@ class SaveReceiver : BroadcastReceiver() {
         jsonToPreference(context, day6String, SIX_DAYS_AGO_MOOD)
         jsonToPreference(context, day7String, SEVEN_DAYS_AGO_MOOD)
 
-        Log.d(
-            "ShuffleLog",
-            "Show me. Today: $todayMood, and $day0String" +
-                    "\nYesterday: $yesterdayMood, and $day1String" +
-                    "\n2Days: $twoDaysAgoMood, and $day2String" +
-                    "\n3Days: $threeDaysAgoMood, and $day3String" +
-                    "\n4Days: $fourDaysAgoMood, and $day4String" +
-                    "\n5Days: $fiveDaysAgoMood, and $day5String" +
-                    "\n6Days: $sixDaysAgoMood, and $day6String" +
-                    "\n7Days: $sevenDaysAgoMood, and $day7String"
-        )
-
-        currentMood = Mood()
-        MyApp.moodImage.setImageResource(MyApp.arrayOfImages[currentMood.moodScore])
-        MyApp.background.setBackgroundColor(context.getColor(MyApp.arrayOfBackgrounds[currentMood.moodScore]))
+        initialiseHistoryVariables(context)
 
         return context
     }

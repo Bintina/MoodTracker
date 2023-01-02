@@ -20,7 +20,6 @@ import kotlin.math.abs
 
 class MainActivity : AppCompatActivity(), GestureDetector.OnGestureListener {
     //View initialising
-
     private lateinit var noteButton: ImageView
     private lateinit var historyActivity: ImageView
 
@@ -59,9 +58,9 @@ class MainActivity : AppCompatActivity(), GestureDetector.OnGestureListener {
         //Initialize SharedPref
         moodSharedPref = getSharedPreferences(FILE_NAME, MODE_PRIVATE)
         initialiseMood()
-        setMood()
-        initialiseHistoryVariables(this)
         triggerAlarm()
+        initialiseHistoryVariables(this)
+        setMood()
     }
 
     //instantiate current mood and save to Shared Preferences.......................................
@@ -75,14 +74,11 @@ class MainActivity : AppCompatActivity(), GestureDetector.OnGestureListener {
             currentMood = Gson().fromJson<Mood>(currentMoodString, Mood::class.java)
         }
 
-
         return currentMood
-
     }
 
     //Set View Elements.............................................................................
     private fun setMood() {
-
         moodImage.setImageResource(arrayOfImages[currentMood.moodScore])
         background.setBackgroundColor(getColor(arrayOfBackgrounds[currentMood.moodScore]))
     }
@@ -93,7 +89,6 @@ class MainActivity : AppCompatActivity(), GestureDetector.OnGestureListener {
     }
 
     //Gesture Detection.............................................................................
-
     override fun onTouchEvent(event: MotionEvent?): Boolean {
 
         gestureDetector.onTouchEvent(event)

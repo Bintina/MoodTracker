@@ -11,8 +11,6 @@ class MyApp: Application() {
 
     companion object{
 
-
-
         //View variables
         lateinit var background: View
         lateinit var moodImage: ImageView

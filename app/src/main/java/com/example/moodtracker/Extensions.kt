@@ -6,7 +6,6 @@ import android.app.PendingIntent
 import android.content.Context
 import android.content.Context.MODE_PRIVATE
 import android.content.Intent
-import android.icu.lang.UCharacter.GraphemeClusterBreak.L
 import android.util.Log
 import android.view.View
 import android.widget.EditText
@@ -37,9 +36,9 @@ import com.example.moodtracker.MyApp.Companion.twoDaysAgoMood
 import com.example.moodtracker.MyApp.Companion.yesterdayMood
 import com.google.gson.Gson
 
+
 //Object ->Json, Json ->Preference..................................................................
 fun objectToJson(moodObject: Mood): String {
-
     moodJsonString = Gson().toJson(moodObject)
 
     return moodJsonString
@@ -54,17 +53,14 @@ fun jsonToPreference(context: Context, moodJsonString: String, key: String) {
 
 //Object ->Preference...............................................................................
 fun Activity.objectToPreference(context: Context, moodObject: Mood, key: String) {
-
     moodJsonString = objectToJson(moodObject)
+
     jsonToPreference(context, moodJsonString, key)
-
-
 }
 
 //Preference ->Json. Json ->Object..................................................................
 fun preferenceToJson(context: Context, key: String): String {
     moodSharedPref = context.getSharedPreferences(MyApp.FILE_NAME, AppCompatActivity.MODE_PRIVATE)
-
 
     moodJsonString = moodSharedPref.getString(key, "").toString()
 
@@ -89,6 +85,7 @@ fun preferenceToObject(context: Context, key: String): Mood {
 
     return moodObject
 }
+
 //initialitions
 fun initialiseHistoryVariables(context: Context) {
     todayMood = preferenceToObject(context, CURRENT_MOOD)
@@ -110,10 +107,10 @@ fun Activity.triggerAlarm() {
     val intent = Intent(this, SaveReceiver::class.java)
     intent.action = "FOO"
 
-
     val alarmStartDelay = 5L
-    val alarmIntervalInMillis = 10_000L
+    val alarmIntervalInMillis = 30_000L //AlarmManager,INTERVAL_DAY
     val alarmManagerTriggerTimeInMillis = System.currentTimeMillis() + alarmStartDelay * 1_000L
+    //
     val pendingIntent = PendingIntent.getBroadcast(
         this,
         saveMoodRequestCode,
@@ -158,22 +155,23 @@ fun Activity.buildDialog() {
 fun Activity.goToHistory() {
     val intent = Intent(this, HistoryActivity::class.java)
     startActivity(intent)
-
 }
 
 //History View methods..............................................................................
 //History bar heights...............................................................................
 fun Activity.setHistoryBarHeights(view: View, layout: LinearLayout) {
+    val metrics = resources.displayMetrics
+    val densityDpi = metrics.densityDpi
 
-
-    //Extract screen height
-    val screenHeight = resources.displayMetrics.heightPixels.toInt()
-    val padding = 250
-    val heightPerBar = (screenHeight-padding) / 7
+    //  getWindowManager().getDefaultDisplay().getMetrics(metrics);
+    val height = metrics.heightPixels.toInt()
+    val heightdp = height / (densityDpi / 160).toInt()
+    val heightPerBar = ((heightdp * (densityDpi / 160)) - 200) / 7
 
     val params = view.layoutParams
     params.height = heightPerBar
 }
+
 //HistoryBarColors..................................................................................
 fun Activity.setHistoryBarColors(view: View, moodObject: Mood) {
     view.setBackgroundColor(getColor(MyApp.arrayOfBackgrounds[moodObject.moodScore]))
@@ -181,7 +179,6 @@ fun Activity.setHistoryBarColors(view: View, moodObject: Mood) {
 
 //History bar widths................................................................................
 fun Activity.setHistoryBarWidth(view: View, moodObject: Mood) {
-
     //Extract screen width
     val screenWidth = resources.displayMetrics.widthPixels.toInt()
     val widthIncrement = screenWidth / 5
@@ -191,6 +188,7 @@ fun Activity.setHistoryBarWidth(view: View, moodObject: Mood) {
     val params = view.layoutParams
     params.width = widthIncrement * historyScore
 }
+
 //Show comments in history screen...................................................................
 fun Activity.showCommentIcon(moodObject: Mood, view: TextView) {
     val moodComment = moodObject.moodComment
@@ -209,3 +207,4 @@ fun Activity.showCommentIcon(moodObject: Mood, view: TextView) {
     }
 
 }
+

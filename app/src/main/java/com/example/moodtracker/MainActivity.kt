@@ -4,24 +4,24 @@ import android.content.Intent
 import android.os.Bundle
 import android.view.GestureDetector
 import android.view.MotionEvent
+import android.view.View
 import android.widget.ImageView
-import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
 import com.example.moodtracker.MyApp.Companion.CURRENT_MOOD
 import com.example.moodtracker.MyApp.Companion.FILE_NAME
 import com.example.moodtracker.MyApp.Companion.arrayOfBackgrounds
 import com.example.moodtracker.MyApp.Companion.arrayOfImages
-import com.example.moodtracker.MyApp.Companion.background
 import com.example.moodtracker.MyApp.Companion.currentMood
-import com.example.moodtracker.MyApp.Companion.moodImage
 import com.example.moodtracker.MyApp.Companion.moodSharedPref
 import com.google.gson.Gson
 import kotlin.math.abs
 
 class MainActivity : AppCompatActivity(), GestureDetector.OnGestureListener {
     //View initialising
+    lateinit var background: View
+    lateinit var moodImage: ImageView
     private lateinit var noteButton: ImageView
-    private lateinit var historyActivity: ImageView
+    private lateinit var historyActivityBtn: ImageView
 
     //Gesture Detect measurements
     lateinit var gestureDetector: GestureDetector
@@ -37,26 +37,26 @@ class MainActivity : AppCompatActivity(), GestureDetector.OnGestureListener {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main)
 
-        // Find views. view variable allocations
-        MyApp.background = findViewById(R.id.mood_container)
-        MyApp.moodImage = findViewById(R.id.emoji_image)
+        // View variables
+        background = findViewById(R.id.mood_container)
+        moodImage = findViewById(R.id.emoji_image)
         noteButton = findViewById(R.id.custom_note)
-        historyActivity = findViewById(R.id.mood_history)
+        historyActivityBtn = findViewById(R.id.mood_history)
 
-        //Gestures
+        //Gesture Detector
         gestureDetector = GestureDetector(this, this)
 
-        //OnClickListeners
+        //On click listeners
         noteButton.setOnClickListener {
             buildDialog()
             saveCommentAndMood()
         }
-        historyActivity.setOnClickListener {
+        historyActivityBtn.setOnClickListener {
             val intent = Intent(this, HistoryActivity::class.java)
             startActivity(intent)
 
         }
-        //Initialize SharedPref
+        //Initialize Shared Prefs and Shared Pref values
         moodSharedPref = getSharedPreferences(FILE_NAME, MODE_PRIVATE)
         initialiseMood()
         triggerAlarm()
@@ -64,7 +64,7 @@ class MainActivity : AppCompatActivity(), GestureDetector.OnGestureListener {
         setMood()
     }
 
-    //instantiate current mood and save to Shared Preferences.......................................
+    //Instantiate neutral mood or retrieve Shared Pref mood.........................................
     private fun initialiseMood(): Mood {
 
         val currentMoodString = moodSharedPref.getString(CURRENT_MOOD, null)
@@ -78,53 +78,44 @@ class MainActivity : AppCompatActivity(), GestureDetector.OnGestureListener {
         return currentMood
     }
 
-    //Set View Elements.............................................................................
+    //Set view background and emoji.................................................................
     private fun setMood() {
         moodImage.setImageResource(arrayOfImages[currentMood.moodScore])
         background.setBackgroundColor(getColor(arrayOfBackgrounds[currentMood.moodScore]))
     }
 
-    //save mood object to Shared
+    //Save mood object to Shared
     fun saveCommentAndMood() {
         objectToPreference(this, currentMood, CURRENT_MOOD)
     }
 
     //Gesture Detection.............................................................................
     override fun onTouchEvent(event: MotionEvent?): Boolean {
-
         gestureDetector.onTouchEvent(event)
 
         when (event?.action) {
-            //start swipe
             0 -> {
                 y1 = event.y
             }
-            //end swipe
             1 -> {
                 y2 = event.y
 
                 val valueY: Float = y2 - y1
                 if (abs(valueY) > MIN_DISTANCE) {
-                    //bottom to top swipe
                     if (currentMood.moodScore < 4) {
 
                         if (y1 > y2) {
-                            //+ mood score
                             playHappierSound(this)
                             currentMood.moodScore += 1
                             setMood()
-                            Toast.makeText(this, "Bottom swipe", Toast.LENGTH_SHORT).show()
                         }
                     }
-                    //top to bottom swipe
                     if (currentMood.moodScore > 0) {
 
                         if (y1 < y2) {
-                            //- mood score
                             playSadderSound(this)
                             currentMood.moodScore -= 1
                             setMood()
-                            Toast.makeText(this, "Top swipe", Toast.LENGTH_SHORT).show()
                         }
                     }
                 }
@@ -141,7 +132,6 @@ class MainActivity : AppCompatActivity(), GestureDetector.OnGestureListener {
 
     override fun onShowPress(e: MotionEvent?) {
         //TODO("Not yet implemented")
-
     }
 
     override fun onSingleTapUp(e: MotionEvent?): Boolean {

@@ -23,7 +23,7 @@ class HistoryActivity : AppCompatActivity() {
         setContentView(historyBinding.root)
 
 
-        //Set historyBar Heights
+        //Set history bar Heights
         setHistoryBarHeights(historyBinding.yesterday, historyBinding.historyLinear)
         setHistoryBarHeights(historyBinding.twoDays, historyBinding.historyLinear)
         setHistoryBarHeights(historyBinding.threeDays, historyBinding.historyLinear)
@@ -32,7 +32,7 @@ class HistoryActivity : AppCompatActivity() {
         setHistoryBarHeights(historyBinding.sixDays, historyBinding.historyLinear)
         setHistoryBarHeights(historyBinding.sevenDays, historyBinding.historyLinear)
 
-        //Set historyBar colors
+        //Set history bar colors
         setHistoryBarColors(historyBinding.yesterday, yesterdayMood)
         setHistoryBarColors(historyBinding.twoDays, twoDaysAgoMood)
         setHistoryBarColors(historyBinding.threeDays, threeDaysAgoMood)
@@ -60,9 +60,4 @@ class HistoryActivity : AppCompatActivity() {
         showCommentIcon(sevenDaysAgoMood, historyBinding.sevenDays)
 
     }
-
-
-
-
-
 }

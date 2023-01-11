@@ -12,11 +12,7 @@ class MyApp: Application() {
 
     companion object{
 
-        //View variables
-        lateinit var background: View
-        lateinit var moodImage: ImageView
-
-        //Image and Background Arrays
+        //Image and Background Arrays...............................................................
         val arrayOfBackgrounds = arrayOf<Int>(
             R.color.faded_red,
             R.color.warm_grey,
@@ -32,7 +28,7 @@ class MyApp: Application() {
             R.drawable.smiley_super_happy
         ).toIntArray()
 
-        // SharedPreference Variables
+        // SharedPreference Variables...............................................................
         lateinit var currentMood: Mood
         lateinit var moodSharedPref: SharedPreferences
         lateinit var moodJsonString: String
@@ -46,7 +42,7 @@ class MyApp: Application() {
         const val SIX_DAYS_AGO_MOOD = "Six Days Ago Mood"
         const val SEVEN_DAYS_AGO_MOOD = "Seven Days Ago Mood"
 
-        //Mood object variables
+        //Mood object variables.....................................................................
         val defaultMood:Mood = Mood()
         var todayMood:Mood = Mood()
         var yesterdayMood: Mood = Mood()
@@ -57,7 +53,7 @@ class MyApp: Application() {
         var sixDaysAgoMood: Mood = Mood()
         var sevenDaysAgoMood: Mood = Mood()
 
-        //media player for sound effect
+        //media player for sound effect.............................................................
         lateinit var mediaPlayer1: MediaPlayer
         lateinit var mediaPlayer2: MediaPlayer
     }

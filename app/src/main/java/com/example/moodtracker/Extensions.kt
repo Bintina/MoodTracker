@@ -1,4 +1,14 @@
 package com.example.moodtracker
+/*
+Credits to sound mp3 source. less_happy_tone is from
+<a href="https://pixabay.com/users/u_31vnwfmzt6-31480456/?utm_source=link-attribution&amp;utm_medium
+=referral&amp;utm_campaign=music&amp;utm_content=126626">u_31vnwfmzt6</a> from
+<a href="https://pixabay.com//?utm_source=link-attribution&amp;utm_medium=referral&amp;utm_campaign
+=music&amp;utm_content=126626">Pixabay</a>.
+more_happy_tone is from
+<a href="https://pixabay.com/?utm_source=link-attribution&amp;utm_medium=referral&amp;utm_campaign
+=music&amp;utm_content=6346">Pixabay</a>.
+*/
 
 import android.app.Activity
 import android.app.AlarmManager
@@ -6,7 +16,6 @@ import android.app.PendingIntent
 import android.content.Context
 import android.content.Context.MODE_PRIVATE
 import android.content.Intent
-import android.media.MediaPlayer
 import android.util.Log
 import android.view.View
 import android.widget.EditText
@@ -40,7 +49,7 @@ import com.example.moodtracker.MyApp.Companion.yesterdayMood
 import com.google.gson.Gson
 import java.util.*
 
-
+//..................................................................................................
 //Object ->Json, Json ->Preference..................................................................
 fun objectToJson(moodObject: Mood): String {
     moodJsonString = Gson().toJson(moodObject)
@@ -90,7 +99,7 @@ fun preferenceToObject(context: Context, key: String): Mood {
     return moodObject
 }
 
-//initialitions
+//Initializations...................................................................................
 fun initialiseHistoryVariables(context: Context) {
     todayMood = preferenceToObject(context, CURRENT_MOOD)
     yesterdayMood = preferenceToObject(context, YESTERDAY_MOOD)
@@ -102,7 +111,7 @@ fun initialiseHistoryVariables(context: Context) {
     sevenDaysAgoMood = preferenceToObject(context, SEVEN_DAYS_AGO_MOOD)
 }
 
-
+//..................................................................................................
 //Alarm Triggering..................................................................................
 fun Activity.triggerAlarm() {
     val alarmManager = getSystemService(Context.ALARM_SERVICE) as AlarmManager
@@ -123,10 +132,7 @@ fun Activity.triggerAlarm() {
             alarmTime.timeInMillis + 24 * 60 * 60 * 1000// Okay, then tomorrow ...
     }
 
-    val alarmStartDelay = 5L
     val alarmIntervalInMillis = AlarmManager.INTERVAL_DAY //AlarmManager,INTERVAL_DAY
-    val alarmManagerTriggerTimeInMillis = System.currentTimeMillis() + alarmStartDelay * 1_000L
-    //
     val pendingIntent = PendingIntent.getBroadcast(
         this,
         saveMoodRequestCode,
@@ -140,10 +146,9 @@ fun Activity.triggerAlarm() {
         alarmIntervalInMillis,
         pendingIntent
     )
-
-    Toast.makeText(this, "Daily mood save broadcast sent", Toast.LENGTH_LONG).show()
 }
 
+//..................................................................................................
 //Dialog Builder....................................................................................
 fun Activity.buildDialog() {
     val builder = AlertDialog.Builder(this)
@@ -165,6 +170,24 @@ fun Activity.buildDialog() {
         show()
     }
 }
+//..................................................................................................
+//Play Sounds.......................................................................................
+fun Activity.playHappierSound(context: Context) {
+    mediaPlayer1 = android.media.MediaPlayer.create(context, R.raw.more_happy_tone)
+
+    mediaPlayer1.start()
+    mediaPlayer1.isLooping = false
+    mediaPlayer1.setOnCompletionListener { mediaPlayer1.release() }
+
+}
+
+fun Activity.playSadderSound(context: Context) {
+    mediaPlayer2 = android.media.MediaPlayer.create(context, R.raw.less_happy_tone)
+
+    mediaPlayer2.start()
+    mediaPlayer2.isLooping = false
+    mediaPlayer2.setOnCompletionListener { mediaPlayer2.release() }
+}
 
 //..................................................................................................
 //Navigation........................................................................................
@@ -179,7 +202,6 @@ fun Activity.setHistoryBarHeights(view: View, layout: LinearLayout) {
     val metrics = resources.displayMetrics
     val densityDpi = metrics.densityDpi
 
-    //  getWindowManager().getDefaultDisplay().getMetrics(metrics);
     val height = metrics.heightPixels.toInt()
     val heightdp = height / (densityDpi / 160).toInt()
     val heightPerBar = ((heightdp * (densityDpi / 160)) - 200) / 7
@@ -221,29 +243,6 @@ fun Activity.showCommentIcon(moodObject: Mood, view: TextView) {
             Toast.makeText(this, moodComment, Toast.LENGTH_LONG).show()
         }
     }
-
-}
-
-//Play Sounds
-fun Activity.playHappierSound(context: Context) {
-    mediaPlayer1 = android.media.MediaPlayer.create(context, R.raw.more_happy_tone)
-
-
-    mediaPlayer1.start()
-    mediaPlayer1.isLooping = false
-    mediaPlayer1.setOnCompletionListener(MediaPlayer.OnCompletionListener {
-        mediaPlayer1.release()
-    })
-
-}
-
-
-fun Activity.playSadderSound(context: Context) {
-    mediaPlayer2 = android.media.MediaPlayer.create(context, R.raw.less_happy_tone)
-
-    mediaPlayer2.start()
-    mediaPlayer2.isLooping = false
-    mediaPlayer2.setOnCompletionListener { mediaPlayer2.release() }
 }
 
 

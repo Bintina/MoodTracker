@@ -41,7 +41,7 @@ class SaveReceiver : BroadcastReceiver() {
         var day4String = preferenceToJson(context, FOUR_DAYS_AGO_MOOD)
         var day5String = preferenceToJson(context, FIVE_DAYS_AGO_MOOD)
         var day6String = preferenceToJson(context, SIX_DAYS_AGO_MOOD)
-        var day7String = preferenceToJson(context, SEVEN_DAYS_AGO_MOOD)
+        val day7String : String
 
         day7String = day6String
         day6String = day5String

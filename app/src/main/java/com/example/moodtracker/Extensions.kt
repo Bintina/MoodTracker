@@ -6,6 +6,7 @@ import android.app.PendingIntent
 import android.content.Context
 import android.content.Context.MODE_PRIVATE
 import android.content.Intent
+import android.media.MediaPlayer
 import android.util.Log
 import android.view.View
 import android.widget.EditText
@@ -26,6 +27,8 @@ import com.example.moodtracker.MyApp.Companion.currentMood
 import com.example.moodtracker.MyApp.Companion.defaultMood
 import com.example.moodtracker.MyApp.Companion.fiveDaysAgoMood
 import com.example.moodtracker.MyApp.Companion.fourDaysAgoMood
+import com.example.moodtracker.MyApp.Companion.mediaPlayer1
+import com.example.moodtracker.MyApp.Companion.mediaPlayer2
 import com.example.moodtracker.MyApp.Companion.moodJsonString
 import com.example.moodtracker.MyApp.Companion.moodSharedPref
 import com.example.moodtracker.MyApp.Companion.sevenDaysAgoMood
@@ -35,6 +38,7 @@ import com.example.moodtracker.MyApp.Companion.todayMood
 import com.example.moodtracker.MyApp.Companion.twoDaysAgoMood
 import com.example.moodtracker.MyApp.Companion.yesterdayMood
 import com.google.gson.Gson
+import java.util.*
 
 
 //Object ->Json, Json ->Preference..................................................................
@@ -107,8 +111,20 @@ fun Activity.triggerAlarm() {
     val intent = Intent(this, SaveReceiver::class.java)
     intent.action = "FOO"
 
+    //get calendar instance
+    val alarmTime = Calendar.getInstance()
+    alarmTime.set(Calendar.HOUR_OF_DAY, 24)
+    alarmTime.set(Calendar.MINUTE, 0)
+    alarmTime.set(Calendar.SECOND, 0)
+    alarmTime.set(Calendar.MILLISECOND, 0)
+
+    if (System.currentTimeMillis() > alarmTime.timeInMillis) {
+        alarmTime.timeInMillis =
+            alarmTime.timeInMillis + 24 * 60 * 60 * 1000// Okay, then tomorrow ...
+    }
+
     val alarmStartDelay = 5L
-    val alarmIntervalInMillis = 30_000L //AlarmManager,INTERVAL_DAY
+    val alarmIntervalInMillis = AlarmManager.INTERVAL_DAY //AlarmManager,INTERVAL_DAY
     val alarmManagerTriggerTimeInMillis = System.currentTimeMillis() + alarmStartDelay * 1_000L
     //
     val pendingIntent = PendingIntent.getBroadcast(
@@ -120,7 +136,7 @@ fun Activity.triggerAlarm() {
 
     alarmManager.setRepeating(
         AlarmManager.RTC_WAKEUP,
-        alarmManagerTriggerTimeInMillis,
+        alarmTime.timeInMillis,
         alarmIntervalInMillis,
         pendingIntent
     )
@@ -207,4 +223,27 @@ fun Activity.showCommentIcon(moodObject: Mood, view: TextView) {
     }
 
 }
+
+//Play Sounds
+fun Activity.playHappierSound(context: Context) {
+    mediaPlayer1 = android.media.MediaPlayer.create(context, R.raw.more_happy_tone)
+
+
+    mediaPlayer1.start()
+    mediaPlayer1.isLooping = false
+    mediaPlayer1.setOnCompletionListener(MediaPlayer.OnCompletionListener {
+        mediaPlayer1.release()
+    })
+
+}
+
+
+fun Activity.playSadderSound(context: Context) {
+    mediaPlayer2 = android.media.MediaPlayer.create(context, R.raw.less_happy_tone)
+
+    mediaPlayer2.start()
+    mediaPlayer2.isLooping = false
+    mediaPlayer2.setOnCompletionListener { mediaPlayer2.release() }
+}
+
 

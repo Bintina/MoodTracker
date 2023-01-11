@@ -32,6 +32,7 @@ class MainActivity : AppCompatActivity(), GestureDetector.OnGestureListener {
         const val MIN_DISTANCE = 150
     }
 
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main)
@@ -109,6 +110,7 @@ class MainActivity : AppCompatActivity(), GestureDetector.OnGestureListener {
 
                         if (y1 > y2) {
                             //+ mood score
+                            playHappierSound(this)
                             currentMood.moodScore += 1
                             setMood()
                             Toast.makeText(this, "Bottom swipe", Toast.LENGTH_SHORT).show()
@@ -119,6 +121,7 @@ class MainActivity : AppCompatActivity(), GestureDetector.OnGestureListener {
 
                         if (y1 < y2) {
                             //- mood score
+                            playSadderSound(this)
                             currentMood.moodScore -= 1
                             setMood()
                             Toast.makeText(this, "Top swipe", Toast.LENGTH_SHORT).show()
@@ -173,5 +176,6 @@ class MainActivity : AppCompatActivity(), GestureDetector.OnGestureListener {
     override fun onStop() {
         super.onStop()
         saveCommentAndMood()
+
     }
 }

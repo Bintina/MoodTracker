@@ -2,6 +2,7 @@ package com.example.moodtracker
 
 import android.app.Application
 import android.content.SharedPreferences
+import android.media.MediaPlayer
 import android.view.GestureDetector
 import android.view.View
 import android.widget.ImageView
@@ -55,5 +56,9 @@ class MyApp: Application() {
         var fiveDaysAgoMood: Mood = Mood()
         var sixDaysAgoMood: Mood = Mood()
         var sevenDaysAgoMood: Mood = Mood()
+
+        //media player for sound effect
+        lateinit var mediaPlayer1: MediaPlayer
+        lateinit var mediaPlayer2: MediaPlayer
     }
 }

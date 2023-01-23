@@ -1,6 +1,8 @@
 package com.example.moodtracker
 
+import android.content.Context
 import android.content.Intent
+import android.media.MediaPlayer
 import android.os.Bundle
 import android.view.GestureDetector
 import android.view.MotionEvent
@@ -32,6 +34,8 @@ class MainActivity : AppCompatActivity(), GestureDetector.OnGestureListener {
         const val MIN_DISTANCE = 150
     }
 
+    //media player for sound effect.............................................................
+    lateinit var mp: MediaPlayer
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -78,7 +82,7 @@ class MainActivity : AppCompatActivity(), GestureDetector.OnGestureListener {
         return currentMood
     }
 
-    //Set view background and emoji.................................................................
+    //Set view background and image.................................................................
     private fun setMood() {
         moodImage.setImageResource(arrayOfImages[currentMood.moodScore])
         background.setBackgroundColor(getColor(arrayOfBackgrounds[currentMood.moodScore]))
@@ -88,6 +92,35 @@ class MainActivity : AppCompatActivity(), GestureDetector.OnGestureListener {
     fun saveCommentAndMood() {
         objectToPreference(this, currentMood, CURRENT_MOOD)
     }
+
+    //..............................................................................................
+    //Play Sounds...................................................................................
+    fun playHappierSound(context: Context) {
+        mp = android.media.MediaPlayer.create(context, R.raw.more_happy_tone)
+
+        mp.start()
+        mp.isLooping = false
+        mp.setOnCompletionListener { mp.release() }
+
+    }
+
+    fun playSadderSound(context: Context) {
+        mp = android.media.MediaPlayer.create(context, R.raw.less_happy_tone)
+
+        mp.start()
+        mp.isLooping = false
+        mp.setOnCompletionListener { mp.release() }
+    }
+/*
+Credits to sound mp3 source. less_happy_tone is from
+<a href="https://pixabay.com/users/u_31vnwfmzt6-31480456/?utm_source=link-attribution&amp;utm_medium
+=referral&amp;utm_campaign=music&amp;utm_content=126626">u_31vnwfmzt6</a> from
+<a href="https://pixabay.com//?utm_source=link-attribution&amp;utm_medium=referral&amp;utm_campaign
+=music&amp;utm_content=126626">Pixabay</a>.
+more_happy_tone is from
+<a href="https://pixabay.com/?utm_source=link-attribution&amp;utm_medium=referral&amp;utm_campaign
+=music&amp;utm_content=6346">Pixabay</a>.
+*/
 
     //Gesture Detection.............................................................................
     override fun onTouchEvent(event: MotionEvent?): Boolean {

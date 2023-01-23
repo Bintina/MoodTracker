@@ -1,14 +1,5 @@
 package com.example.moodtracker
-/*
-Credits to sound mp3 source. less_happy_tone is from
-<a href="https://pixabay.com/users/u_31vnwfmzt6-31480456/?utm_source=link-attribution&amp;utm_medium
-=referral&amp;utm_campaign=music&amp;utm_content=126626">u_31vnwfmzt6</a> from
-<a href="https://pixabay.com//?utm_source=link-attribution&amp;utm_medium=referral&amp;utm_campaign
-=music&amp;utm_content=126626">Pixabay</a>.
-more_happy_tone is from
-<a href="https://pixabay.com/?utm_source=link-attribution&amp;utm_medium=referral&amp;utm_campaign
-=music&amp;utm_content=6346">Pixabay</a>.
-*/
+
 
 import android.app.Activity
 import android.app.AlarmManager
@@ -36,8 +27,6 @@ import com.example.moodtracker.MyApp.Companion.currentMood
 import com.example.moodtracker.MyApp.Companion.defaultMood
 import com.example.moodtracker.MyApp.Companion.fiveDaysAgoMood
 import com.example.moodtracker.MyApp.Companion.fourDaysAgoMood
-import com.example.moodtracker.MyApp.Companion.mediaPlayer1
-import com.example.moodtracker.MyApp.Companion.mediaPlayer2
 import com.example.moodtracker.MyApp.Companion.moodJsonString
 import com.example.moodtracker.MyApp.Companion.moodSharedPref
 import com.example.moodtracker.MyApp.Companion.sevenDaysAgoMood
@@ -50,7 +39,7 @@ import com.google.gson.Gson
 import java.util.*
 
 //..................................................................................................
-//Object ->Json, Json ->Preference..................................................................
+//Methods that convert Objects to Json and  Json to Shared Preference...............................
 fun objectToJson(moodObject: Mood): String {
     moodJsonString = Gson().toJson(moodObject)
 
@@ -64,14 +53,14 @@ fun jsonToPreference(context: Context, moodJsonString: String, key: String) {
     moodSharedPrefEdit.putString(key, moodJsonString).apply()
 }
 
-//Object ->Preference...............................................................................
+//Method that converts Object to Shared Preference..................................................
 fun Activity.objectToPreference(context: Context, moodObject: Mood, key: String) {
     moodJsonString = objectToJson(moodObject)
 
     jsonToPreference(context, moodJsonString, key)
 }
 
-//Preference ->Json. Json ->Object..................................................................
+//Methods converting Preference to Json and Json to Objects.........................................
 fun preferenceToJson(context: Context, key: String): String {
     moodSharedPref = context.getSharedPreferences(MyApp.FILE_NAME, AppCompatActivity.MODE_PRIVATE)
 
@@ -89,7 +78,7 @@ fun jsonToObject(moodJsonString: String): Mood {
     return Gson().fromJson(moodJsonString, Mood::class.java)
 }
 
-//Preference -> Object..............................................................................
+//Method converting Shared Preferences to Objects...................................................
 fun preferenceToObject(context: Context, key: String): Mood {
     moodJsonString = preferenceToJson(context, key)
     var moodObject = defaultMood
@@ -99,7 +88,7 @@ fun preferenceToObject(context: Context, key: String): Mood {
     return moodObject
 }
 
-//Initializations...................................................................................
+//Initializing Mood Objects.........................................................................
 fun initialiseHistoryVariables(context: Context) {
     todayMood = preferenceToObject(context, CURRENT_MOOD)
     yesterdayMood = preferenceToObject(context, YESTERDAY_MOOD)
@@ -170,31 +159,6 @@ fun Activity.buildDialog() {
         show()
     }
 }
-//..................................................................................................
-//Play Sounds.......................................................................................
-fun Activity.playHappierSound(context: Context) {
-    mediaPlayer1 = android.media.MediaPlayer.create(context, R.raw.more_happy_tone)
-
-    mediaPlayer1.start()
-    mediaPlayer1.isLooping = false
-    mediaPlayer1.setOnCompletionListener { mediaPlayer1.release() }
-
-}
-
-fun Activity.playSadderSound(context: Context) {
-    mediaPlayer2 = android.media.MediaPlayer.create(context, R.raw.less_happy_tone)
-
-    mediaPlayer2.start()
-    mediaPlayer2.isLooping = false
-    mediaPlayer2.setOnCompletionListener { mediaPlayer2.release() }
-}
-
-//..................................................................................................
-//Navigation........................................................................................
-fun Activity.goToHistory() {
-    val intent = Intent(this, HistoryActivity::class.java)
-    startActivity(intent)
-}
 
 //History View methods..............................................................................
 //History bar heights...............................................................................
@@ -210,7 +174,7 @@ fun Activity.setHistoryBarHeights(view: View, layout: LinearLayout) {
     params.height = heightPerBar
 }
 
-//HistoryBarColors..................................................................................
+//History bar colors................................................................................
 fun Activity.setHistoryBarColors(view: View, moodObject: Mood) {
     view.setBackgroundColor(getColor(MyApp.arrayOfBackgrounds[moodObject.moodScore]))
 }

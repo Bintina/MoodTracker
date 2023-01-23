@@ -53,8 +53,5 @@ class MyApp: Application() {
         var sixDaysAgoMood: Mood = Mood()
         var sevenDaysAgoMood: Mood = Mood()
 
-        //media player for sound effect.............................................................
-        lateinit var mediaPlayer1: MediaPlayer
-        lateinit var mediaPlayer2: MediaPlayer
     }
 }
